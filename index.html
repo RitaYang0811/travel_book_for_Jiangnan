@@ -1,388 +1,1480 @@
 <!doctype html>
 <html lang="zh-Hant-TW">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>江南旅遊書</title>
-<meta name="theme-color" content="#1f5f5b">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="江南旅遊書">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-180.png">
-<link rel="icon" href="icon-180.png">
-<style>
-  :root {
-    --bg: #f6f3ec;
-    --card: #ffffff;
-    --ink: #1d1d1b;
-    --muted: #5d5a52;
-    --line: #e2ddd0;
-    --accent: #1f5f5b;
-    --accent-soft: #e3efed;
-    --warn: #9a4b00;
-    --warn-soft: #fdf0dc;
-    --fs: 1;
-    color-scheme: light;
-  }
-  * { box-sizing: border-box; }
-  html { font-size: calc(18px * var(--fs)); -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0; background: var(--bg); color: var(--ink);
-    font-family: -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-    line-height: 1.6;
-    padding: env(safe-area-inset-top, 0px) 16px calc(88px + env(safe-area-inset-bottom, 0px));
-  }
-  .wrap { max-width: 640px; margin: 0 auto; }
-  header { padding: 18px 0 8px; }
-  header h1 { font-size: 1.45rem; margin: 0; line-height: 1.3; }
-  header .sub { color: var(--muted); font-size: .9rem; }
-  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .between { justify-content: space-between; }
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>江南旅遊書</title>
+    <meta name="theme-color" content="#f5f1e8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="江南旅遊書" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-180.png" />
+    <link rel="icon" href="icon-180.png" />
+    <style>
+      /* 江南水墨：宣紙底、黛青主色、朱砂點綴 */
+      :root {
+        --paper: #f5f1e8;
+        --card: #fffdf8;
+        --ink: #1f2321;
+        --muted: #5b605c;
+        --line: #e3dccb;
+        --dai: #24534f; /* 黛青 */
+        --dai-soft: #e2ece9;
+        --zhu: #b0432c; /* 朱砂 */
+        --zhu-soft: #f8e7e1;
+        --gold: #a77a2a;
+        --fs: 1;
+        --serif: -apple-system, "PingFang TC", "Noto Sans TC",
+          "Microsoft JhengHei", sans-serif;
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        font-size: calc(18px * var(--fs));
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family:
+          -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei",
+          sans-serif;
+        line-height: 1.6;
+        padding: env(safe-area-inset-top, 0px) 16px
+          calc(92px + env(safe-area-inset-bottom, 0px));
+      }
+      .wrap {
+        max-width: 640px;
+        margin: 0 auto;
+      }
+      h1,
+      h2,
+      .serif {
+        font-family: var(--serif);
+      }
 
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin: 12px 0; }
-  .card h2 { font-size: 1.15rem; margin: 0 0 8px; }
-  .card h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--accent); }
-  .badge { display: inline-block; font-size: .78rem; padding: 2px 10px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
-  .badge.warn { background: var(--warn-soft); color: var(--warn); }
-  .big-date { font-size: 2rem; font-weight: 800; color: var(--accent); line-height: 1.2; }
-  .muted { color: var(--muted); }
-  .small { font-size: .85rem; }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 18px 0 6px;
+      }
+      header h1 {
+        font-size: 1.4rem;
+        margin: 0;
+        line-height: 1.3;
+      }
+      header .sub {
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
 
-  .day-head { display: flex; gap: 12px; align-items: center; }
-  .day-num { flex: none; width: 3.2rem; height: 3.2rem; border-radius: 12px; background: var(--accent); color: #fff; display: grid; place-items: center; text-align: center; line-height: 1.1; font-weight: 700; }
-  .day-num small { display: block; font-size: .7rem; font-weight: 500; }
-  ul.spots { margin: 4px 0 0; padding-left: 1.2em; }
-  ul.spots li { margin: 2px 0; }
-  .meals { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; margin: 0; }
-  .meals dt { font-weight: 700; color: var(--muted); }
-  .meals dd { margin: 0; }
+      /* 字級：單一小按鈕，點一下 小→中→大 */
+      header .fs-btn {
+        flex: none;
+        margin-top: 4px;
+        padding: 2px 10px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--muted);
+        background: transparent;
+        border: 1px solid var(--line);
+        border-radius: 99px;
+      }
 
-  .daytabs { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 2px; position: sticky; top: env(safe-area-inset-top, 0px); background: var(--bg); z-index: 5; }
-  .daytabs button { flex: none; }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .between {
+        justify-content: space-between;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+        margin: 12px 0;
+        box-shadow: 0 1px 0 rgba(60, 50, 30, 0.04);
+      }
+      .card h2 {
+        font-size: 1.15rem;
+        margin: 0 0 8px;
+      }
+      /* 標題 + 右側標籤/按鈕：h2 不留下方 margin，才能垂直置中 */
+      .card > .row.between:first-child {
+        margin-bottom: 8px;
+      }
+      .card > .row.between:first-child > h2 {
+        margin: 0;
+      }
+      .card h3 {
+        font-size: 1rem;
+        margin: 16px 0 6px;
+        color: var(--dai);
+      }
+      .badge {
+        display: inline-block;
+        font-size: 0.78rem;
+        padding: 2px 10px;
+        border-radius: 99px;
+        background: var(--dai-soft);
+        color: var(--dai);
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .badge.zhu {
+        background: var(--zhu-soft);
+        color: var(--zhu);
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .small {
+        font-size: 0.85rem;
+      }
+      .num {
+        font-variant-numeric: tabular-nums;
+      }
 
-  label.f { display: block; margin: 10px 0 0; font-weight: 600; font-size: .9rem; }
-  input[type=text], input[type=time], input[type=tel], textarea {
-    width: 100%; font: inherit; font-size: 1rem; padding: 10px 12px; margin-top: 4px;
-    border: 1.5px solid var(--line); border-radius: 10px; background: #fffdf8; color: var(--ink);
-  }
-  input:focus, textarea:focus { outline: 3px solid var(--accent-soft); border-color: var(--accent); }
-  textarea { min-height: 5.5em; resize: vertical; }
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
-  @media (max-width: 360px) { .grid2 { grid-template-columns: 1fr; } }
-  .guide { background: var(--warn-soft); border-color: #f0d9b5; }
-  .guide h3 { color: var(--warn); margin-top: 0; }
+      .hero {
+        background: var(--dai);
+        color: #fff;
+        border: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero .muted {
+        color: #cfe0dc;
+      }
+      .hero .big-date {
+        font-family: var(--serif);
+        font-size: 1.75rem;
+        font-weight: 800;
+        line-height: 1.25;
+      }
+      .hero .badge {
+        background: #fff;
+        color: var(--dai);
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        right: -40px;
+        bottom: -70px;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        border: 14px solid rgba(255, 255, 255, 0.08);
+      }
 
-  button, .btn { font: inherit; font-size: .95rem; padding: 10px 16px; border-radius: 10px; border: 1.5px solid var(--accent); background: #fff; color: var(--accent); font-weight: 600; cursor: pointer; }
-  button.primary { background: var(--accent); color: #fff; }
-  button.on { background: var(--accent); color: #fff; }
-  button.ghost { border-color: var(--line); color: var(--muted); }
+      /* 天數標籤 */
+      .day-tag {
+        flex: none;
+        min-width: 4.6rem;
+        padding: 6px 8px;
+        border-radius: 12px;
+        background: var(--dai);
+        color: #fff;
+        text-align: center;
+        line-height: 1.25;
+        font-family: var(--serif);
+        font-weight: 700;
+      }
+      .day-tag small {
+        display: block;
+        font-family: -apple-system, sans-serif;
+        font-size: 0.75rem;
+        font-weight: 500;
+        opacity: 0.85;
+      }
+      .day-head {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .path {
+        margin-top: 12px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        background: var(--dai-soft);
+        color: var(--dai);
+      }
+      .tip {
+        margin-top: 8px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        background: var(--zhu-soft);
+        color: var(--zhu);
+        font-size: 0.9rem;
+      }
+      .spots details {
+        border-bottom: 1px dashed var(--line);
+      }
+      .spots details:last-child {
+        border-bottom: 0;
+      }
+      .spots summary {
+        padding: 9px 0;
+        font-weight: 600;
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .spots summary::-webkit-details-marker {
+        display: none;
+      }
+      .spots summary::after {
+        content: "＋";
+        color: var(--muted);
+        flex: none;
+      }
+      .spots details[open] summary::after {
+        content: "－";
+      }
+      .spots .spot-body {
+        overflow: hidden;
+      }
+      .spots .spot-body p {
+        margin: 0;
+        padding-bottom: 10px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+      .meals {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 4px 12px;
+        margin: 0;
+      }
+      .meals dt {
+        font-weight: 700;
+        color: var(--zhu);
+        font-family: var(--serif);
+      }
+      .meals dd {
+        margin: 0;
+      }
 
-  .pack-cat h3 { margin-top: 0; }
-  .item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
-  .item:last-of-type { border-bottom: 0; }
-  .item input[type=checkbox] { width: 1.6rem; height: 1.6rem; accent-color: var(--accent); flex: none; }
-  .item label { flex: 1; cursor: pointer; }
-  .item.done label { color: var(--muted); text-decoration: line-through; }
-  .item .del { padding: 4px 10px; border-color: var(--line); color: var(--muted); }
-  .add { display: flex; gap: 8px; margin-top: 8px; }
-  .add input { margin-top: 0; }
-  .add button { flex: none; }
-  .progress { height: 12px; border-radius: 99px; background: var(--line); overflow: hidden; margin-top: 8px; }
-  .progress > div { height: 100%; background: var(--accent); width: 0; transition: width .3s; }
+      .daytabs {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        padding: 8px 0 8px;
+        position: sticky;
+        top: env(safe-area-inset-top, 0px);
+        background: var(--paper);
+        z-index: 5;
+        scrollbar-width: none;
+      }
+      .daytabs button {
+        flex: none;
+        padding: 4px 16px;
+      }
+      #dayView > .card:first-child {
+        margin-top: 0;
+      }
 
-  .notes li { margin: 6px 0; }
-  .notes b { color: var(--accent); }
+      /* 表單：所有欄位都能縮到容器寬度，不會撐破版面 */
+      .f {
+        display: block;
+        margin: 10px 0 0;
+        font-weight: 600;
+        font-size: 0.9rem;
+        min-width: 0;
+      }
+      input[type="text"],
+      input[type="time"],
+      input[type="tel"],
+      input[type="number"],
+      select,
+      textarea {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        font: inherit;
+        font-size: 1rem;
+        padding: 10px 12px;
+        margin-top: 4px;
+        border: 1.5px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+        color: var(--ink);
+      }
+      input[type="time"] {
+        -webkit-appearance: none;
+        appearance: none;
+        min-height: 2.85rem;
+        text-align: left;
+      }
+      input[type="time"]::-webkit-date-and-time-value {
+        text-align: left;
+      }
+      select {
+        -webkit-appearance: none;
+        appearance: none;
+      }
+      input:focus,
+      textarea:focus,
+      select:focus {
+        outline: 3px solid var(--dai-soft);
+        border-color: var(--dai);
+      }
+      ::placeholder {
+        color: #a3a6a1;
+        opacity: 1;
+      }
+      textarea {
+        min-height: 5.5em;
+        resize: vertical;
+      }
+      .grid2 {
+        display: grid;
+        /* 字放大時自動變一欄 */
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+        gap: 0 10px;
+      }
+      .guide {
+        background: #fbf5e9;
+        border-color: #ead9b8;
+      }
+      .guide h3 {
+        color: var(--gold);
+        margin-top: 0;
+      }
 
-  nav.tabs {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
-    background: #fff; border-top: 1px solid var(--line);
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  nav.tabs button { border: 0; border-radius: 0; background: none; color: var(--muted); padding: 10px 2px 12px; font-size: .9rem; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-  nav.tabs button .ic { font-size: 1.35rem; line-height: 1; }
-  nav.tabs button.on { color: var(--accent); background: var(--accent-soft); }
+      button {
+        font: inherit;
+        font-size: 0.95rem;
+        padding: 10px 16px;
+        border-radius: 10px;
+        border: 1.5px solid var(--dai);
+        background: var(--card);
+        color: var(--dai);
+        font-weight: 700;
+        cursor: pointer;
+      }
+      button.primary,
+      button.on {
+        background: var(--dai);
+        color: #fff;
+      }
+      button.ghost {
+        border-color: var(--line);
+        color: var(--muted);
+      }
+      button:disabled {
+        visibility: hidden;
+      }
 
-  .toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: #1d1d1b; color: #fff; padding: 8px 18px; border-radius: 99px; font-size: .9rem; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 20; }
-  .toast.show { opacity: .92; }
-  section[hidden] { display: none !important; }
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header class="row between">
-    <div>
-      <h1>晶鑽江南美食饗宴 5日</h1>
-      <div class="sub">上海・蘇州・杭州・烏鎮</div>
+      /* 行李 */
+      .who {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .who button {
+        padding: 12px 8px;
+        text-align: center;
+      }
+      .who button .p {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+      .item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px dashed var(--line);
+      }
+      .item:last-of-type {
+        border-bottom: 0;
+      }
+      .item input[type="checkbox"] {
+        width: 1.6rem;
+        height: 1.6rem;
+        accent-color: var(--dai);
+        flex: none;
+        margin: 0;
+      }
+      .item label {
+        flex: 1;
+        min-width: 0;
+        cursor: pointer;
+      }
+      .item.done label {
+        color: var(--muted);
+        text-decoration: line-through;
+      }
+      /* 向左滑出「刪除」（行李、花費共用） */
+      .swipe {
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px dashed var(--line);
+      }
+      .swipe:last-of-type {
+        border-bottom: 0;
+      }
+      .swipe-fg {
+        position: relative;
+        z-index: 1;
+        background: var(--card);
+        border-bottom: 0;
+        touch-action: pan-y;
+        transition: transform 0.2s ease;
+      }
+      .swipe.open .swipe-fg {
+        transform: translateX(-5.5rem);
+      }
+      .swipe .exp {
+        border-bottom: 0;
+      }
+      .swipe-hint {
+        margin: -2px 4px;
+        text-align: right;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .swipe-del {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 5.5rem;
+        border: 0;
+        border-radius: 0;
+        background: var(--zhu);
+        color: #fff;
+      }
+      .link-btn {
+        padding: 4px 6px;
+        border: 0;
+        background: none;
+        color: var(--muted);
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .add {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .add input {
+        margin-top: 0;
+        flex: 1;
+      }
+      .add button {
+        flex: none;
+      }
+      .progress {
+        height: 10px;
+        border-radius: 99px;
+        background: var(--line);
+        overflow: hidden;
+        margin-top: 10px;
+      }
+      .progress > div {
+        height: 100%;
+        background: var(--dai);
+        width: 0;
+        transition: width 0.3s;
+      }
+
+      /* 記帳 / 匯率 */
+      .rate-big {
+        font-family: var(--serif);
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--dai);
+      }
+      .conv {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: 8px;
+        align-items: end;
+      }
+      .conv .eq {
+        padding-bottom: 12px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+      }
+      .chips button {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        border-color: var(--line);
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .chips button.on {
+        border-color: var(--dai);
+        background: var(--dai);
+        color: #fff;
+      }
+      /* 幣別：和金額輸入框同高、同一條底線 */
+      .cur-seg {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-top: 4px;
+        border: 1.5px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+      }
+      .cur-seg button {
+        border: 0;
+        border-radius: 0;
+        padding: 10px 0;
+        font-size: 1rem;
+        line-height: 1.6;
+        background: none;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .cur-seg button.on {
+        background: var(--dai);
+        color: #fff;
+      }
+      .total {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .total .amt {
+        font-family: var(--serif);
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--zhu);
+      }
+      .exp {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px dashed var(--line);
+      }
+      .exp:last-child {
+        border-bottom: 0;
+      }
+      .exp .ic {
+        flex: none;
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        background: var(--dai-soft);
+        display: grid;
+        place-items: center;
+      }
+      .exp .body {
+        flex: 1;
+        min-width: 0;
+      }
+      .exp .body b {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .exp .right {
+        text-align: right;
+        flex: none;
+      }
+
+      .notes {
+        padding-left: 1.2em;
+        margin: 0;
+      }
+      .notes li {
+        margin: 7px 0;
+      }
+      .notes b {
+        color: var(--dai);
+      }
+
+      nav.tabs {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10;
+        background: var(--card);
+        border-top: 1px solid var(--line);
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      nav.tabs button {
+        border: 0;
+        border-radius: 0;
+        background: none;
+        color: var(--muted);
+        padding: 9px 2px 11px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+      }
+      nav.tabs button .ic {
+        font-size: 1.3rem;
+        line-height: 1;
+      }
+      nav.tabs button.on {
+        color: var(--dai);
+        box-shadow: inset 0 3px 0 var(--zhu);
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+        transform: translateX(-50%);
+        background: var(--ink);
+        color: #fff;
+        padding: 8px 18px;
+        border-radius: 99px;
+        font-size: 0.9rem;
+        opacity: 0;
+        transition: opacity 0.2s;
+        pointer-events: none;
+        z-index: 20;
+        white-space: nowrap;
+      }
+      .toast.show {
+        opacity: 0.92;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <h1>晶鑽江南美食饗宴</h1>
+          <div class="sub">
+            上海・蘇州・杭州・烏鎮　<span style="white-space: nowrap"
+              >五天四夜</span
+            >
+          </div>
+        </div>
+        <button class="fs-btn" id="fsBtn"></button>
+      </header>
+
+      <!-- ===== 總覽 ===== -->
+      <section id="tab-home">
+        <div class="card hero">
+          <div class="muted small">出發日期</div>
+          <div class="big-date">2026年10月28日（三）</div>
+          <div class="row" style="margin-top: 6px">
+            <span class="badge" id="countdown"></span>
+            <span class="muted small">10/28 – 11/1</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="row between">
+            <h2>✈️ 航班</h2>
+            <span class="badge zhu">待確認</span>
+          </div>
+          <p class="muted small" style="margin: 0">
+            以下為行程網頁上的參考航班，拿到旅行社說明會資料後請改成正確資訊。
+          </p>
+          <h3>去程　10/28（三）</h3>
+          <div class="grid2">
+            <label class="f"
+              >航班<input
+                type="text"
+                data-field="fl.out.no"
+                data-default="中華航空 CI501"
+            /></label>
+            <label class="f"
+              >起飛 → 抵達<input
+                type="text"
+                data-field="fl.out.time"
+                data-default="08:40 → 10:50"
+            /></label>
+          </div>
+          <label class="f"
+            >機場集合時間 / 地點<input
+              type="text"
+              data-field="fl.out.meet"
+              placeholder="例：06:30 桃園一航廈 華航櫃台"
+          /></label>
+          <h3>回程　11/1（日）</h3>
+          <div class="grid2">
+            <label class="f"
+              >航班<input
+                type="text"
+                data-field="fl.back.no"
+                data-default="中華航空 CI504"
+            /></label>
+            <label class="f"
+              >起飛 → 抵達<input
+                type="text"
+                data-field="fl.back.time"
+                data-default="19:50 → 21:50"
+            /></label>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>📅 行程一覽</h2>
+          <div id="overviewList"></div>
+        </div>
+
+        <div class="card">
+          <h2>👥 領隊 / 導遊</h2>
+          <div class="grid2">
+            <label class="f"
+              >領隊姓名<input type="text" data-field="c.leader"
+            /></label>
+            <label class="f"
+              >領隊電話<input type="tel" data-field="c.leaderTel"
+            /></label>
+            <label class="f"
+              >當地導遊<input type="text" data-field="c.guide"
+            /></label>
+            <label class="f"
+              >導遊電話<input type="tel" data-field="c.guideTel"
+            /></label>
+          </div>
+          <label class="f"
+            >遊覽車車號 / 顏色<input
+              type="text"
+              data-field="c.bus"
+              placeholder="例：滬A·12345 白色"
+          /></label>
+        </div>
+      </section>
+
+      <!-- ===== 每日行程 ===== -->
+      <section id="tab-days" hidden>
+        <div class="daytabs" id="dayTabs"></div>
+        <div id="dayView"></div>
+      </section>
+
+      <!-- ===== 行李 ===== -->
+      <section id="tab-pack" hidden>
+        <div class="card">
+          <h2>🧳 行李清單</h2>
+          <div class="muted small">
+            10月底江南：白天約 20–23°C，早晚約
+            14–16°C，偶有雨。洋蔥式穿搭最方便。
+          </div>
+          <div class="who" id="whoTabs" style="margin-top: 12px"></div>
+          <div class="progress"><div id="packBar"></div></div>
+          <div class="row between" style="margin-top: 8px">
+            <span class="small" id="packCount"></span>
+            <span class="row" style="gap: 2px; margin-left: auto">
+              <button class="link-btn" id="packRestore">恢復預設</button>
+              <span class="muted small">｜</span>
+              <button class="link-btn" id="packReset">取消勾選</button>
+            </span>
+          </div>
+        </div>
+        <div class="swipe-hint">💡 項目向左滑會出現「刪除」</div>
+        <div id="packList"></div>
+      </section>
+
+      <!-- ===== 記帳 ===== -->
+      <section id="tab-money" hidden>
+        <div class="card">
+          <div class="row between">
+            <h2>💱 匯率換算</h2>
+            <button class="ghost small" id="rateRefresh">重新整理</button>
+          </div>
+          <div class="rate-big num" id="rateText">讀取中…</div>
+          <div class="muted small" id="rateMeta"></div>
+          <div class="conv" style="margin-top: 6px">
+            <label class="f"
+              >人民幣 ¥<input
+                type="number"
+                inputmode="decimal"
+                id="cvCny"
+                placeholder="0"
+            /></label>
+            <span class="eq">=</span>
+            <label class="f"
+              >新台幣 NT$<input
+                type="number"
+                inputmode="decimal"
+                id="cvTwd"
+                placeholder="0"
+            /></label>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>✏️ 記一筆</h2>
+          <form id="expForm">
+            <div class="grid2">
+              <label class="f">哪一天<select id="exDay"></select></label>
+              <label class="f"
+                >付款方式<select id="exPay">
+                  <option>現金</option>
+                  <option>信用卡</option>
+                  <option>支付寶</option>
+                  <option>微信支付</option>
+                </select></label
+              >
+            </div>
+            <div class="f" style="margin-top: 10px">分類</div>
+            <div class="chips" id="exCat"></div>
+            <label class="f"
+              >買了什麼<input
+                type="text"
+                id="exText"
+                placeholder="例：絲巾、伴手禮、礦泉水"
+            /></label>
+            <div class="grid2">
+              <label class="f"
+                >金額<input
+                  type="number"
+                  inputmode="decimal"
+                  id="exAmt"
+                  placeholder="0"
+                  required
+              /></label>
+              <div class="f">
+                幣別
+                <div class="cur-seg" id="exCur"></div>
+              </div>
+            </div>
+            <button
+              class="primary"
+              type="submit"
+              style="width: 100%; margin-top: 14px"
+            >
+              記下來
+            </button>
+          </form>
+        </div>
+
+        <div class="swipe-hint">💡 記錄向左滑會出現「刪除」</div>
+        <div class="card">
+          <div class="total">
+            <h2 style="margin: 0">💰 總花費</h2>
+            <span class="amt num" id="expTotal">NT$ 0</span>
+          </div>
+          <div class="muted small" id="expSub"></div>
+          <div id="expList"></div>
+        </div>
+      </section>
+
+      <!-- ===== 須知 ===== -->
+      <section id="tab-info" hidden>
+        <div class="card">
+          <h2>📋 行程注意事項</h2>
+          <ul class="notes">
+            <li>
+              <b>全程無購物、無自費</b>，入住國際五星飯店，三排座椅遊覽車。
+            </li>
+            <li>
+              <b>禁止脫隊</b>：團體行程需同進同出；中途脫隊視同放棄，不退費，小費仍需付足天數；脫隊延回須自行開立機票。
+            </li>
+            <li>
+              <b>證件</b>：台灣出入境用護照，出入境大陸出示<b>有效期限內的台胞證</b>。建議出發前七個工作日把護照正本交給旅行社。
+            </li>
+            <li>
+              <b>行動電源</b>：須標示 10,000mAh 以下、每人限 2
+              個，只能放隨身行李，不可託運；<b>未標示廠牌或容量會被海關沒收</b>。
+            </li>
+            <li><b>禁帶</b>：水果及肉類製品不得攜帶入出境。</li>
+            <li>
+              <b>機位</b>：團體機票無法預先選位，<b>同行者座位可能不相鄰</b>。
+            </li>
+            <li>
+              <b>小費</b>：隨團人員、導遊及司機每人每天 NT$300（5天 =
+              每人 NT$1,500，兩人 NT$3,000）；行李、房間小費人民幣 5–10
+              元；足浴按摩小費人民幣 10–25 元。
+            </li>
+            <li>
+              <b>用餐</b>：10人一桌（八菜一湯），已請餐廳少油少鹽，口味太重可請導遊協助。素食餐多為炒青菜
+              2–3 道，素食者建議自備素食罐頭或泡麵。
+            </li>
+            <li>
+              <b>房型</b>：以兩人一室、兩張單人床為主；需大床房請出發前提出，可能加價且不保證。
+            </li>
+            <li>
+              <b>飯店</b>：部分飯店不提供一次性用品（牙膏、牙刷、梳子、浴巾、刮鬍刀），請自備盥洗用具及拖鞋。季節交替時可能沒有冷暖氣。
+            </li>
+            <li>
+              <b>行程順序</b>可能依飯店與交通調整，以行前說明會資料為準。
+            </li>
+            <li>
+              餐廳、休息站販售的絲綢、字畫、茶葉等<b>並非購物站</b>。
+            </li>
+            <li><b>秋日限定</b>：10–12/18 出發，蘇州享用大閘蟹一對（公母各一）🦀</li>
+            <li>全程有<b>個人耳機導覽</b>，記得每晚充電。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>🇨🇳 當地實用資訊</h2>
+          <ul class="notes">
+            <li><b>時差</b>：無，與台灣同時間。</li>
+            <li>
+              <b>電壓</b
+              >：220V。台灣雙平腳插頭多數可直接插，但電器要看標示「100–240V」才能用（吹風機、電捲棒要特別注意）。
+            </li>
+            <li>
+              <b>網路</b>：當地無法直接用
+              LINE、Google、Facebook。建議開<b>台灣電信漫遊</b>（可正常用
+              LINE），或買可用 LINE 的 eSIM。
+            </li>
+            <li>
+              <b>付款</b>：當地多用支付寶 /
+              微信支付。出發前可先下載支付寶並綁定信用卡，也帶一些人民幣現金。
+            </li>
+            <li><b>飲水</b>：生水不能喝，喝瓶裝水或飯店煮沸的水。</li>
+            <li><b>廁所</b>：景區廁所常沒有衛生紙，隨身帶面紙。</li>
+            <li>
+              <b>走路</b>：古鎮石板路、拱橋多，穿防滑好走的鞋；上下遊船慢慢來。
+            </li>
+            <li><b>每天</b>拍一張飯店名片 / 房卡套，迷路時給司機看。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>🆘 緊急聯絡</h2>
+          <ul class="notes">
+            <li>當地報警 <b>110</b>、救護車 <b>120</b></li>
+            <li>
+              海基會 24 小時緊急服務：<b>+886-2-2533-2995</b>（出發前請再確認）
+            </li>
+          </ul>
+          <label class="f"
+            >旅行社電話<input
+              type="text"
+              data-field="c.agency"
+              data-default="東南旅行社 (02)2567-8111"
+          /></label>
+          <label class="f"
+            >台灣家人聯絡人 / 電話<input type="text" data-field="c.family"
+          /></label>
+        </div>
+
+        <div class="card">
+          <h2>❤️ 健康小卡</h2>
+          <div class="muted small">
+            萬一身體不適，可直接把這頁給導遊或醫護人員看。
+          </div>
+          <h3>先生</h3>
+          <div class="grid2">
+            <label class="f"
+              >姓名<input type="text" data-field="h.a.name"
+            /></label>
+            <label class="f"
+              >血型<input type="text" data-field="h.a.blood"
+            /></label>
+          </div>
+          <label class="f"
+            >慢性病 / 用藥 / 過敏<textarea
+              data-field="h.a.med"
+              placeholder="例：高血壓，每天早上吃 XXX；對盤尼西林過敏"
+            ></textarea>
+          </label>
+          <h3>女士</h3>
+          <div class="grid2">
+            <label class="f"
+              >姓名<input type="text" data-field="h.b.name"
+            /></label>
+            <label class="f"
+              >血型<input type="text" data-field="h.b.blood"
+            /></label>
+          </div>
+          <label class="f"
+            >慢性病 / 用藥 / 過敏<textarea data-field="h.b.med"></textarea>
+          </label>
+        </div>
+
+        <div class="card">
+          <h2>📲 傳資料給另一支手機</h2>
+          <p class="muted small" style="margin-top: 0">
+            資料只存在這支手機裡。想讓另一半的手機也有一樣的內容：
+          </p>
+          <ol class="small" style="margin: 0 0 10px; padding-left: 1.4em">
+            <li>在<b>填好資料的手機</b>按「複製我的資料」，用 LINE 傳給對方</li>
+            <li>在<b>另一支手機</b>把那段文字貼到下面的框框，按「匯入這份資料」</li>
+          </ol>
+          <div class="tip" style="margin: 0 0 10px">
+            ⚠️ 匯入後，這支手機會變成和對方<b>完全一樣</b>，這支手機原本填的內容會被取代。
+          </div>
+          <div class="row">
+            <button class="primary" id="exportBtn">複製我的資料</button>
+            <button id="importBtn">匯入這份資料</button>
+          </div>
+          <textarea
+            id="backupBox"
+            placeholder="把對方傳來的文字貼在這裡"
+            style="margin-top: 10px"
+          ></textarea>
+        </div>
+      </section>
     </div>
-    <button class="ghost" id="fsBtn" aria-label="調整字體大小">字 A+</button>
-  </header>
 
-  <!-- ===== 總覽 ===== -->
-  <section id="tab-home">
-    <div class="card">
-      <div class="muted small">出發日期</div>
-      <div class="big-date">2026 / 10 / 28（三）</div>
-      <div class="row" style="margin-top:4px">
-        <span class="badge" id="countdown"></span>
-        <span class="muted small">10/28 – 11/1・5天4夜</span>
-      </div>
-    </div>
+    <nav class="tabs" id="tabs">
+      <button data-tab="home" class="on"><span class="ic">🏠</span>總覽</button>
+      <button data-tab="days"><span class="ic">🗺️</span>行程</button>
+      <button data-tab="pack"><span class="ic">🧳</span>行李</button>
+      <button data-tab="money"><span class="ic">💰</span>記帳</button>
+      <button data-tab="info"><span class="ic">📋</span>須知</button>
+    </nav>
+    <div class="toast" id="toast">已儲存</div>
 
-    <div class="card">
-      <div class="row between"><h2>✈️ 航班</h2><span class="badge warn">待確認</span></div>
-      <p class="muted small" style="margin:0">以下為行程網頁上的參考航班，拿到旅行社說明會資料後請改成正確資訊。</p>
-      <h3>去程　10/28（三）</h3>
-      <div class="grid2">
-        <label class="f">航班<input type="text" data-field="fl.out.no" data-default="中華航空 CI501"></label>
-        <label class="f">起飛 → 抵達<input type="text" data-field="fl.out.time" data-default="08:40 桃園 → 10:50 上海"></label>
-      </div>
-      <label class="f">機場集合時間 / 地點<input type="text" data-field="fl.out.meet" placeholder="例：06:30 桃園一航廈 華航櫃台"></label>
-      <h3>回程　11/1（日）</h3>
-      <div class="grid2">
-        <label class="f">航班<input type="text" data-field="fl.back.no" data-default="中華航空 CI504"></label>
-        <label class="f">起飛 → 抵達<input type="text" data-field="fl.back.time" data-default="19:50 上海 → 21:50 桃園"></label>
-      </div>
-    </div>
+    <script>
+      const TRIP_START = "2026-10-28";
+      const DAY_NAMES = ["第一天", "第二天", "第三天", "第四天", "第五天"];
 
-    <div class="card">
-      <h2>📅 行程一覽</h2>
-      <div id="overviewList"></div>
-    </div>
+      // 內容依東南旅遊行程頁 GFG0000000204 / HDNBP5261028A 整理
+      const DAYS = [
+        {
+          date: "10/28",
+          wk: "三",
+          route: "桃園 → 上海",
+          path: "桃園機場 →(1小時55分)→ 上海浦東機場 → 上海中心大廈118樓觀景台 → 船遊黃浦外灘 → 飯店",
+          spots: [
+            { n: "桃園機場集合", d: "搭乘豪華班機飛往十里洋場之上海。" },
+            {
+              n: "上海中心大廈 118樓觀景台",
+              d: "「上海之巔」，世界最高綠色建築、中國第一高樓，360度全視角欣賞上海全景。",
+            },
+            {
+              n: "船遊黃浦外灘",
+              d: "西側52幢風格各異的大廈被稱為「萬國建築博覽」，中國銀行大樓、和平飯店、海關大樓、匯豐銀行大樓重現昔日「遠東華爾街」風采。",
+            },
+          ],
+          meals: {
+            早: "機上餐食",
+            午: "小點－生煎包4顆",
+            晚: "上海1號私藏菜（150人民幣 / 位）",
+          },
+          mealNote:
+            "上海1號私藏菜：環境雅致，兼具新式海派風格與老上海情懷，出品典型本幫菜，菜品精緻。",
+          hotels: ["寶華萬豪酒店", "楊浦濱江萬豪酒店", "濱江喜來登酒店"],
+        },
+        {
+          date: "10/29",
+          wk: "四",
+          route: "上海 → 蘇州",
+          path: "上海 →100Km(1.5h)→ 蘇州寒山寺 → 拙政園 → 虎丘 → 夜遊七里山塘古街 → 飯店",
+          spots: [
+            {
+              n: "寒山寺",
+              d: "古詩〈楓橋夜泊〉中的寒山寺，有鐘樓、鼓樓，可體會「夜半鐘聲到客船」的情景。",
+            },
+            {
+              n: "拙政園",
+              d: "蘇州最大、明代最富江南特色的園林，園內31景，以水池為中心，分東、中、西三部分。",
+            },
+            {
+              n: "虎丘",
+              d: "有「吳中第一名勝」之稱。蘇軾說：「到蘇州不遊虎丘，乃憾事也！」",
+            },
+            {
+              n: "夜遊七里山塘古街",
+              d: "「姑蘇第一名街」，1100多年歷史，路面全是青石鋪成。",
+            },
+          ],
+          meals: {
+            早: "酒店內",
+            午: "祥記蘇幫菜（120人民幣 / 位）",
+            晚: "松鶴樓（150人民幣 / 位）",
+          },
+          mealNote:
+            "松鶴樓：創建於清乾隆年間，蘇幫菜百年老字號，中國四大名店之一，相傳乾隆下江南常到此品嚐。",
+          tips: ["秋日限定：於蘇州享用大閘蟹一對（公母各一）🦀"],
+          hotels: ["蘇州灣艾美酒店", "萬豪酒店", "香格里拉酒店"],
+        },
+        {
+          date: "10/30",
+          wk: "五",
+          route: "蘇州 → 杭州",
+          path: "蘇州 →90Km(1.5h)→ 杭州【船遊西湖、柳浪聞鶯、長橋公園】→ 靈隱寺 → 明清河坊商店街 → 最憶是杭州秀 → 飯店",
+          spots: [
+            {
+              n: "船遊西湖",
+              d: "西湖的景致隨四季變化，令人嘆為觀止。",
+            },
+            {
+              n: "柳浪聞鶯",
+              d: "位於西湖東南岸清波門處，柳樹各具姿態（醉柳、獅柳、浣紗柳），黃鶯飛舞啼鳴。",
+            },
+            {
+              n: "長橋公園",
+              d: "相傳梁山伯送祝英台到此，來回走了18趟，「長」指的是情意長——「長橋不長」是西湖三怪之一。",
+            },
+            {
+              n: "靈隱寺",
+              d: "杭州千年古剎、禪宗十剎名寺，已有一千六百多年歷史，濟公曾於此出家。",
+            },
+            {
+              n: "明清河坊商店街",
+              d: "明清時代建築群，還有穿著明清服飾的人員，彷彿回到數百年前。",
+            },
+            {
+              n: "最憶是杭州秀",
+              d: "在《印象西湖》基礎上打造的室外水上演出，運用全息投影，結合科技與自然。",
+            },
+          ],
+          meals: {
+            早: "酒店內",
+            午: "皇飯兒杭州本幫菜（100人民幣 / 位）",
+            晚: "山外山杭州風味（150人民幣 / 位）",
+          },
+          tips: [
+            "西湖景區常有不定期交通管制，大型遊覽車無法進入時，改搭當地公車接駁。",
+            "靈隱寺採實名預約制，若未預約成功，改參觀【雷峰塔】（西湖十景「雷峰夕照」）。",
+          ],
+          hotels: ["良渚洲際酒店", "凱賓斯基酒店", "錢江萬豪酒店"],
+        },
+        {
+          date: "10/31",
+          wk: "六",
+          route: "杭州 → 烏鎮 → 上海",
+          path: "杭州 →73.5Km(1.5h)→ 烏鎮西柵景區 →130Km(2.5h)→ 上海新天地",
+          spots: [
+            {
+              n: "烏鎮西柵景區",
+              d: "完整保存晚清和民國時期的水鄉古鎮風貌，以河成街、街橋相連、依河築屋。",
+            },
+            {
+              n: "敘昌醬園",
+              d: "滿院青灰色醬缸，缸身可見「敘昌醬園」、「咸豐九年」字樣。",
+            },
+            {
+              n: "草木本色染坊",
+              d: "2500平方米的手工印染晾曬工坊，以藍草製作藍印花布，並用茶葉、桑樹皮等草木原料彩烤上色。",
+            },
+            {
+              n: "西柵大街",
+              d: "看不到一條水泥路，全是被歲月磨亮的青石板。",
+            },
+            { n: "老郵局", d: "烏鎮有悠久的郵政歷史，京杭大運河穿鎮而過。" },
+            { n: "三寸金蓮館", d: "展出中國各地纏足鞋825雙，介紹纏足文化。" },
+            {
+              n: "上海新天地",
+              d: "以上海「石庫門」老房子改造的餐飲、購物、休閒區。",
+            },
+          ],
+          meals: {
+            早: "酒店內",
+            午: "民國時代（80人民幣 / 位）",
+            晚: "耶里夏麗新疆歌舞宴（200人民幣 / 位）",
+          },
+          mealNote:
+            "民國時代：位於烏鎮西柵景區內，民國主題餐廳，包廂以民國文人命名。耶里夏麗：道地新疆美食搭配歌舞表演。",
+          hotels: ["寶華萬豪酒店", "楊浦濱江萬豪酒店", "濱江喜來登酒店"],
+        },
+        {
+          date: "11/1",
+          wk: "日",
+          route: "上海 → 桃園",
+          path: "上海城隍廟商圈 →5Km(0.5h)→ 田子坊 → 金茂君悅九重天下午茶 →49Km(1.5h)→ 上海浦東機場 → 桃園",
+          spots: [
+            {
+              n: "上海城隍廟商圈",
+              d: "「到上海不去城隍廟，等於沒到過大上海。」彷彿回到100年前的繁華集市。",
+            },
+            {
+              n: "田子坊",
+              d: "泰康路210弄，老廠房改造的藝術街，特色小店林立。",
+            },
+            {
+              n: "金茂君悅 九重天下午茶（兩人一套）",
+              d: "87層雲端西班牙風情下午茶，視線與東方明珠平起平坐，俯瞰陸家嘴與黃浦江。",
+            },
+            { n: "搭機返回台灣", d: "飛返臺灣溫暖的家。" },
+          ],
+          meals: {
+            早: "酒店內",
+            午: "粵港潮樓（100人民幣 / 位）",
+            晚: "機上餐食",
+          },
+          hotels: [],
+        },
+      ];
 
-    <div class="card">
-      <h2>👥 領隊 / 導遊</h2>
-      <div class="grid2">
-        <label class="f">領隊姓名<input type="text" data-field="c.leader"></label>
-        <label class="f">領隊電話<input type="tel" data-field="c.leaderTel"></label>
-        <label class="f">當地導遊<input type="text" data-field="c.guide"></label>
-        <label class="f">導遊電話<input type="tel" data-field="c.guideTel"></label>
-      </div>
-      <label class="f">遊覽車車號 / 顏色<input type="text" data-field="c.bus" placeholder="例：滬A·12345 白色"></label>
-    </div>
-  </section>
+      const PACK = [
+        {
+          cat: "證件與錢",
+          items: [
+            "護照（效期 6 個月以上）",
+            "台胞證（確認效期）",
+            "身分證",
+            "證件影本 + 大頭照 2 張",
+            "機票 / 行程單",
+            "旅平險保單",
+            "人民幣現金",
+            "新台幣（回程交通用）",
+            "信用卡（Visa / Master / 銀聯）",
+          ],
+        },
+        {
+          cat: "手機與電器",
+          items: [
+            "手機",
+            "充電器 + 充電線",
+            "行動電源（≤10,000mAh，放隨身）",
+            "開通漫遊 / eSIM",
+            "支付寶設定好",
+            "耳機（耳機導覽用）",
+            "延長線 / 萬用插座",
+          ],
+        },
+        {
+          cat: "衣物（14–23°C）",
+          items: [
+            "薄長袖上衣 × 5",
+            "薄毛衣 / 針織外套",
+            "防風防潑水外套",
+            "長褲 × 3",
+            "內衣褲 × 5",
+            "襪子 × 5",
+            "睡衣",
+            "好走防滑的鞋（已穿慣的）",
+            "室內拖鞋",
+            "帽子",
+            "圍巾 / 薄披肩",
+          ],
+        },
+        { cat: "雨具", items: ["折疊傘", "輕便雨衣"] },
+        {
+          cat: "藥品與健康",
+          items: [
+            "慢性病藥（多帶 3 天份，放隨身）",
+            "英文 / 中文藥單",
+            "腸胃藥",
+            "感冒藥",
+            "止痛藥",
+            "暈車 / 暈船藥",
+            "OK 繃",
+            "痠痛貼布",
+            "口罩",
+            "乾洗手",
+            "老花眼鏡 / 備用眼鏡",
+          ],
+        },
+        {
+          cat: "盥洗",
+          items: [
+            "牙刷牙膏",
+            "洗面乳 / 保養品",
+            "防曬乳",
+            "護唇膏",
+            "刮鬍刀",
+            "梳子",
+            "小毛巾",
+          ],
+        },
+        {
+          cat: "隨身小物",
+          items: [
+            "保溫杯",
+            "輕便小背包",
+            "面紙 / 濕紙巾",
+            "零錢包",
+            "筆",
+            "塑膠袋 / 收納袋",
+            "小點心",
+          ],
+        },
+      ];
+      const PEOPLE = { a: "先生", b: "女士" };
+      const EXP_CATS = {
+        餐飲: "🍜",
+        購物: "🛍️",
+        伴手禮: "🎁",
+        交通: "🚕",
+        小費: "🧧",
+        其他: "📝",
+      };
 
-  <!-- ===== 每日行程 ===== -->
-  <section id="tab-days" hidden>
-    <div class="daytabs" id="dayTabs"></div>
-    <div id="dayView"></div>
-  </section>
+      // ---------- storage ----------
+      const KEY = "jiangnan-trip-2026";
+      let state = {
+        f: {},
+        pk: { a: { on: {}, hide: {} }, b: { on: {}, hide: {} } },
+        custom: [],
+        exp: [],
+        who: "a",
+        fs: 1,
+        day: 0,
+        rate: null,
+      };
+      try {
+        Object.assign(state, JSON.parse(localStorage.getItem(KEY)) || {});
+      } catch (e) {}
+      function save(msg) {
+        try {
+          localStorage.setItem(KEY, JSON.stringify(state));
+        } catch (e) {}
+        if (msg !== false) toast(msg || "已儲存");
+      }
+      let toastTimer;
+      function toast(t) {
+        const el = document.getElementById("toast");
+        el.textContent = t;
+        el.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove("show"), 1300);
+      }
+      const esc = (s) =>
+        String(s).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      const fmt = (n, d = 0) =>
+        Number(n).toLocaleString("zh-TW", {
+          minimumFractionDigits: d,
+          maximumFractionDigits: d,
+        });
 
-  <!-- ===== 行李 ===== -->
-  <section id="tab-pack" hidden>
-    <div class="card">
-      <h2>🧳 行李清單</h2>
-      <div class="muted small">10月底江南：白天約 20–23°C，早晚約 14–16°C，偶有雨。洋蔥式穿搭最方便。</div>
-      <div class="progress"><div id="packBar"></div></div>
-      <div class="row between" style="margin-top:6px">
-        <span class="small" id="packCount"></span>
-        <button class="ghost small" id="packReset">全部取消勾選</button>
-      </div>
-    </div>
-    <div id="packList"></div>
-  </section>
+      // 所有 data-field 欄位自動存取
+      function bindFields(root) {
+        root.querySelectorAll("[data-field]").forEach((el) => {
+          const k = el.dataset.field;
+          el.value = state.f[k] ?? el.dataset.default ?? "";
+          let t;
+          el.addEventListener("input", () => {
+            state.f[k] = el.value;
+            clearTimeout(t);
+            t = setTimeout(() => save(), 500);
+          });
+        });
+      }
 
-  <!-- ===== 須知 ===== -->
-  <section id="tab-info" hidden>
-    <div class="card">
-      <h2>📋 行程注意事項</h2>
-      <ul class="notes">
-        <li><b>全程無購物、無自費</b>，入住國際五星飯店，三排座椅遊覽車。</li>
-        <li><b>禁止脫隊</b>：若脫隊需自行處理機票等費用。</li>
-        <li><b>證件</b>：護照 + <b>有效台胞證</b>（出發前確認效期）。</li>
-        <li><b>行動電源</b>：10,000mAh 以下、每人限 2 個，必須放隨身行李，不可託運；機上請勿使用。</li>
-        <li><b>小費</b>：領隊/導遊/司機每人每天 NT$300（5天 = 每人 NT$1,500，兩人 NT$3,000）；行李、房間小費人民幣 5–10 元。</li>
-        <li><b>素食</b>旅客建議自備食品。</li>
-        <li><b>秋季限定</b>：10–12/18 出發，每人享大閘蟹一對 🦀</li>
-        <li>全程有<b>個人耳機導覽</b>，記得每晚充電。</li>
-      </ul>
-    </div>
+      // ---------- 字體 小 / 中 / 大 ----------
+      const FS = [
+        { v: 1, t: "小" },
+        { v: 1.15, t: "中" },
+        { v: 1.3, t: "大" },
+      ];
+      const fsBtn = document.getElementById("fsBtn");
+      function applyFs() {
+        const cur = FS.find((x) => x.v === state.fs) || FS[0];
+        state.fs = cur.v;
+        document.documentElement.style.setProperty("--fs", cur.v);
+        fsBtn.textContent = cur.t;
+        fsBtn.setAttribute("aria-label", `字體大小：${cur.t}，點一下切換`);
+      }
+      fsBtn.onclick = () => {
+        const i = FS.findIndex((x) => x.v === state.fs);
+        state.fs = FS[(i + 1) % FS.length].v;
+        applyFs();
+        save(false);
+      };
+      applyFs();
 
-    <div class="card">
-      <h2>🇨🇳 當地實用資訊</h2>
-      <ul class="notes">
-        <li><b>時差</b>：無，與台灣同時間。</li>
-        <li><b>電壓</b>：220V。台灣雙平腳插頭多數可直接插，但電器要看標示「100–240V」才能用（吹風機、電湯匙要特別注意）。</li>
-        <li><b>網路</b>：當地無法直接用 LINE、Google、Facebook。建議開<b>台灣電信漫遊</b>（可正常用 LINE），或買可用 LINE 的 eSIM。</li>
-        <li><b>付款</b>：當地多用支付寶 / 微信支付。出發前可先下載支付寶並綁定信用卡，也帶一些人民幣現金。</li>
-        <li><b>飯店</b>：上海等地飯店不主動提供牙刷牙膏等一次性用品，請自備。</li>
-        <li><b>飲水</b>：生水不能喝，喝瓶裝水或飯店煮沸的水。</li>
-        <li><b>廁所</b>：景區廁所常沒有衛生紙，隨身帶面紙。</li>
-        <li><b>走路</b>：古鎮石板路、拱橋多，穿防滑好走的鞋；上下遊船慢慢來。</li>
-        <li><b>每天</b>拍一張飯店名片 / 房卡套，迷路時給司機看。</li>
-      </ul>
-    </div>
+      // ---------- 倒數 / 今天是第幾天 ----------
+      let tripDay = -1;
+      (function () {
+        const start = new Date(TRIP_START + "T00:00:00");
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const diff = Math.round((start - today) / 86400000);
+        const el = document.getElementById("countdown");
+        if (diff > 0) el.textContent = `還有 ${diff} 天出發`;
+        else if (diff > -DAYS.length) {
+          tripDay = -diff;
+          el.textContent = `今天是${DAY_NAMES[tripDay]}`;
+          state.day = tripDay;
+        } else el.textContent = "旅程結束，歡迎回家";
+      })();
 
-    <div class="card">
-      <h2>🆘 緊急聯絡</h2>
-      <ul class="notes">
-        <li>當地報警 <b>110</b>、救護車 <b>120</b></li>
-        <li>海基會 24 小時緊急服務：<b>+886-2-2533-2995</b>（出發前請再確認）</li>
-      </ul>
-      <label class="f">旅行社緊急電話<input type="tel" data-field="c.agency"></label>
-      <label class="f">台灣家人聯絡人 / 電話<input type="text" data-field="c.family"></label>
-    </div>
-
-    <div class="card">
-      <h2>❤️ 健康小卡</h2>
-      <div class="muted small">萬一身體不適，可直接把這頁給導遊或醫護人員看。</div>
-      <h3>先生</h3>
-      <div class="grid2">
-        <label class="f">姓名<input type="text" data-field="h.a.name"></label>
-        <label class="f">血型<input type="text" data-field="h.a.blood"></label>
-      </div>
-      <label class="f">慢性病 / 用藥 / 過敏<textarea data-field="h.a.med" placeholder="例：高血壓，每天早上吃 XXX；對盤尼西林過敏"></textarea></label>
-      <h3>太太</h3>
-      <div class="grid2">
-        <label class="f">姓名<input type="text" data-field="h.b.name"></label>
-        <label class="f">血型<input type="text" data-field="h.b.blood"></label>
-      </div>
-      <label class="f">慢性病 / 用藥 / 過敏<textarea data-field="h.b.med"></textarea></label>
-    </div>
-
-    <div class="card">
-      <h2>💾 備份 / 傳到另一支手機</h2>
-      <p class="muted small" style="margin-top:0">資料只存在這支手機裡。想讓另一半的手機也有一樣的內容：按「複製備份」→ 用 LINE 傳過去 → 在對方手機貼上並按「還原」。</p>
-      <div class="row">
-        <button class="primary" id="exportBtn">複製備份</button>
-        <button id="importBtn">還原</button>
-      </div>
-      <textarea id="backupBox" placeholder="還原時把備份文字貼在這裡" style="margin-top:10px"></textarea>
-    </div>
-  </section>
-</div>
-
-<nav class="tabs" id="tabs">
-  <button data-tab="home" class="on"><span class="ic">🏠</span>總覽</button>
-  <button data-tab="days"><span class="ic">🗺️</span>每日行程</button>
-  <button data-tab="pack"><span class="ic">🧳</span>行李</button>
-  <button data-tab="info"><span class="ic">📋</span>須知</button>
-</nav>
-<div class="toast" id="toast">已儲存</div>
-
-<script>
-const TRIP_START = '2026-10-28';
-
-const DAYS = [
-  { date: '10/28', wk: '三', route: '台北 → 上海',
-    spots: ['桃園機場搭機前往上海', '上海中心大廈 118 樓觀景台', '黃浦江外灘遊船'],
-    meals: { 早: '溫暖的家', 午: '依行程表（待確認）', 晚: '上海1號私藏菜' },
-    hotel: '上海寶華萬豪酒店 或同級五星' },
-  { date: '10/29', wk: '四', route: '上海 → 蘇州',
-    spots: ['寒山寺', '拙政園', '虎丘', '七里山塘古街 夜遊'],
-    meals: { 早: '飯店內', 午: '祥記蘇幫菜', 晚: '松鶴樓' },
-    hotel: '蘇州灣艾美酒店 或同級五星' },
-  { date: '10/30', wk: '五', route: '蘇州 → 杭州',
-    spots: ['西湖遊船', '靈隱寺', '清河坊商店街', '「最憶是杭州」實景演出'],
-    meals: { 早: '飯店內', 午: '皇飯兒 杭州本幫菜', 晚: '山外山 杭州風味' },
-    hotel: '杭州良渚洲際酒店 或同級五星' },
-  { date: '10/31', wk: '六', route: '杭州 → 烏鎮 → 上海',
-    spots: ['烏鎮西柵景區：敘昌醬園、草木本色染坊、西柵大街', '上海新天地'],
-    meals: { 早: '飯店內', 午: '民國時代', 晚: '耶里夏麗 新疆歌舞宴' },
-    hotel: '上海寶華萬豪酒店 或同級五星' },
-  { date: '11/1', wk: '日', route: '上海 → 台北',
-    spots: ['城隍廟商圈', '田子坊', '金茂君悅 九重天 下午茶', '搭機返回台灣'],
-    meals: { 早: '飯店內', 午: '粵港潮樓', 晚: '機上餐食' },
-    hotel: '溫暖的家 🏠' },
-];
-
-const PACK = [
-  { cat: '證件與錢', items: ['護照（效期 6 個月以上）', '台胞證（確認效期）', '身分證', '證件影本 + 大頭照 2 張', '機票 / 行程單', '旅平險保單', '人民幣現金', '新台幣（回程交通用）', '信用卡（Visa / Master / 銀聯）'] },
-  { cat: '手機與電器', items: ['手機', '充電器 + 充電線', '行動電源（≤10,000mAh，放隨身）', '開通漫遊 / eSIM', '支付寶設定好', '耳機（耳機導覽用）', '延長線 / 萬用插座'] },
-  { cat: '衣物（14–23°C）', items: ['薄長袖上衣 × 5', '薄毛衣 / 針織外套', '防風防潑水外套', '長褲 × 3', '內衣褲 × 5', '襪子 × 5', '睡衣', '好走防滑的鞋（已穿慣的）', '室內拖鞋', '帽子', '圍巾 / 薄披肩'] },
-  { cat: '雨具', items: ['折疊傘', '輕便雨衣'] },
-  { cat: '藥品與健康', items: ['慢性病藥（多帶 3 天份，放隨身）', '英文 / 中文藥單', '腸胃藥', '感冒藥', '止痛藥', '暈車 / 暈船藥', 'OK 繃', '痠痛貼布', '口罩', '乾洗手', '老花眼鏡 / 備用眼鏡'] },
-  { cat: '盥洗', items: ['牙刷牙膏', '洗面乳 / 保養品', '防曬乳', '護唇膏', '刮鬍刀', '梳子', '小毛巾'] },
-  { cat: '隨身小物', items: ['保溫杯', '輕便小背包', '面紙 / 濕紙巾', '零錢包', '筆', '塑膠袋 / 收納袋', '小點心'] },
-];
-
-// ---------- storage ----------
-const KEY = 'jiangnan-trip-2026';
-let state = { f: {}, pack: {}, custom: [], fs: 1, day: 0 };
-try { Object.assign(state, JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) {}
-function save(msg) {
-  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
-  if (msg !== false) toast(msg || '已儲存');
-}
-let toastTimer;
-function toast(t) {
-  const el = document.getElementById('toast');
-  el.textContent = t; el.classList.add('show');
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 1200);
-}
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-
-// 所有 data-field 欄位自動存取
-function bindFields(root) {
-  root.querySelectorAll('[data-field]').forEach(el => {
-    const k = el.dataset.field;
-    el.value = state.f[k] ?? el.dataset.default ?? '';
-    let t;
-    el.addEventListener('input', () => {
-      state.f[k] = el.value;
-      clearTimeout(t); t = setTimeout(() => save(), 500);
-    });
-  });
-}
-
-// ---------- 字體 ----------
-const FS = [1, 1.15, 1.3];
-function applyFs() { document.documentElement.style.setProperty('--fs', state.fs); }
-document.getElementById('fsBtn').onclick = () => {
-  state.fs = FS[(FS.indexOf(state.fs) + 1) % FS.length] || 1;
-  applyFs(); save(false);
-};
-applyFs();
-
-// ---------- 倒數 ----------
-(function () {
-  const start = new Date(TRIP_START + 'T00:00:00');
-  const today = new Date(); today.setHours(0, 0, 0, 0);
-  const diff = Math.round((start - today) / 86400000);
-  const el = document.getElementById('countdown');
-  if (diff > 0) el.textContent = `還有 ${diff} 天出發`;
-  else if (diff > -5) { el.textContent = `旅行第 ${1 - diff} 天`; state.day = -diff; }
-  else el.textContent = '旅程已結束，歡迎回家';
-})();
-
-// ---------- 總覽 ----------
-document.getElementById('overviewList').innerHTML = DAYS.map((d, i) => `
+      // ---------- 總覽 ----------
+      document.getElementById("overviewList").innerHTML = DAYS.map(
+        (d, i) => `
   <div class="item" style="cursor:pointer" onclick="openDay(${i})">
-    <div class="day-num">D${i + 1}<small>${d.date}</small></div>
-    <div style="flex:1"><b>${esc(d.route)}</b><div class="muted small">${esc(d.spots.slice(0, 3).join('、'))}</div></div>
+    <div class="day-tag">${DAY_NAMES[i]}<small>${d.date}（${d.wk}）</small></div>
+    <div style="flex:1;min-width:0"><b>${esc(d.route)}</b><div class="muted small">${esc(
+      d.spots
+        .slice(i === 0 ? 1 : 0, 4)
+        .map((s) => s.n)
+        .join("、"),
+    )}</div></div>
     <span class="muted">›</span>
-  </div>`).join('');
+  </div>`,
+      ).join("");
 
-// ---------- 每日行程 ----------
-function renderDayTabs() {
-  document.getElementById('dayTabs').innerHTML = DAYS.map((d, i) =>
-    `<button class="${i === state.day ? 'on' : ''}" onclick="openDay(${i})">D${i + 1} ${d.date}</button>`).join('');
-}
-function renderDay() {
-  const i = state.day, d = DAYS[i], p = `d${i + 1}.`;
-  const isLast = i === DAYS.length - 1;
-  document.getElementById('dayView').innerHTML = `
+      // ---------- 每日行程 ----------
+      function renderDayTabs() {
+        document.getElementById("dayTabs").innerHTML = DAYS.map(
+          (d, i) =>
+            `<button class="${i === state.day ? "on" : ""}" onclick="openDay(${i})">${DAY_NAMES[i]}</button>`,
+        ).join("");
+      }
+      function renderDay() {
+        const i = state.day,
+          d = DAYS[i],
+          p = `d${i + 1}.`;
+        const isLast = i === DAYS.length - 1;
+        document.getElementById("dayView").innerHTML = `
     <div class="card">
       <div class="day-head">
-        <div class="day-num">D${i + 1}<small>週${d.wk}</small></div>
-        <div><div class="muted small">${d.date}（${d.wk}）</div><h2 style="margin:0">${esc(d.route)}</h2></div>
+        <div class="day-tag">${DAY_NAMES[i]}<small>${d.date}（${d.wk}）</small></div>
+        <h2 style="margin:0">${esc(d.route)}</h2>
       </div>
-      <h3>📍 今日行程</h3>
-      <ul class="spots">${d.spots.map(s => `<li>${esc(s)}</li>`).join('')}</ul>
+      <div class="path small">${esc(d.path)}</div>
+      ${(d.tips || []).map((t) => `<div class="tip">⚠️ ${esc(t)}</div>`).join("")}
+      <h3>📍 今日行程 <span class="muted small" style="font-weight:500">點景點看介紹</span></h3>
+      <div class="spots">${d.spots
+        .map(
+          (s) =>
+            `<details><summary>${esc(s.n)}</summary><div class="spot-body"><p>${esc(s.d)}</p></div></details>`,
+        )
+        .join("")}</div>
       <h3>🍽️ 餐食</h3>
-      <dl class="meals">${Object.entries(d.meals).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
-      ${isLast ? '' : `
-      <h3>🏨 住宿 <span class="badge warn">可能異動</span></h3>
-      <div class="muted small">行程表：${esc(d.hotel)}</div>
+      <dl class="meals">${Object.entries(d.meals)
+        .map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`)
+        .join("")}</dl>
+      ${d.mealNote ? `<p class="muted small" style="margin:8px 0 0">${esc(d.mealNote)}</p>` : ""}
+      ${
+        isLast
+          ? `<h3>🏠 溫暖的家</h3>`
+          : `
+      <h3>🏨 住宿 <span class="badge zhu">可能異動</span></h3>
+      <div class="muted small">行程表：國際品牌五星 ${d.hotels.map(esc).join(" 或 ")} 或同級（大堂及房間有免費 wifi）</div>
       <label class="f">實際入住飯店<input type="text" data-field="${p}hotel" placeholder="確定後填寫"></label>
-      <label class="f">飯店電話 / 地址<input type="text" data-field="${p}hotelAddr"></label>`}
+      <label class="f">飯店電話 / 地址<input type="text" data-field="${p}hotelAddr"></label>`
+      }
     </div>
 
     <div class="card guide">
       <h3>✍️ 導遊說的（自己填）</h3>
       <div class="grid2">
-        ${isLast ? '' : `<label class="f">房間號碼<input type="text" data-field="${p}room" inputmode="numeric" placeholder="例：1208"></label>`}
+        ${isLast ? "" : `<label class="f">房間號碼<input type="text" data-field="${p}room" inputmode="numeric" placeholder="例：1208"></label>`}
         <label class="f">早上叫醒<input type="time" data-field="${p}wake"></label>
         <label class="f">早餐時間<input type="time" data-field="${p}bf"></label>
         <label class="f">集合時間<input type="time" data-field="${p}meet"></label>
@@ -392,93 +1484,494 @@ function renderDay() {
       <label class="f">注意事項 / 筆記<textarea data-field="${p}note" placeholder="例：中午自由活動 12:00–13:30，在 XX 門口集合"></textarea></label>
     </div>
     <div class="row between">
-      <button class="ghost" ${i === 0 ? 'disabled style="visibility:hidden"' : ''} onclick="openDay(${i - 1})">‹ 前一天</button>
-      <button class="ghost" ${isLast ? 'disabled style="visibility:hidden"' : ''} onclick="openDay(${i + 1})">下一天 ›</button>
+      <button class="ghost" ${i === 0 ? "disabled" : ""} onclick="openDay(${i - 1})">‹ ${DAY_NAMES[i - 1] || ""}</button>
+      <button class="ghost" ${isLast ? "disabled" : ""} onclick="openDay(${i + 1})">${DAY_NAMES[i + 1] || ""} ›</button>
     </div>`;
-  bindFields(document.getElementById('dayView'));
-}
-function openDay(i) {
-  state.day = i; save(false);
-  renderDayTabs(); renderDay();
-  showTab('days'); window.scrollTo(0, 0);
-}
+        bindFields(document.getElementById("dayView"));
+        bindSpots(document.getElementById("dayView"));
+      }
 
-// ---------- 行李 ----------
-function renderPack() {
-  let total = 0, done = 0;
-  document.getElementById('packList').innerHTML = PACK.map((c, ci) => {
-    const items = c.items.map((t, ii) => ({ id: `p${ci}-${ii}`, text: t }))
-      .concat(state.custom.filter(x => x.cat === ci).map(x => ({ id: x.id, text: x.text, custom: true })));
-    const rows = items.map(it => {
-      const on = !!state.pack[it.id]; total++; if (on) done++;
-      return `<div class="item ${on ? 'done' : ''}">
-        <input type="checkbox" id="${it.id}" ${on ? 'checked' : ''} onchange="togglePack('${it.id}', this.checked)">
-        <label for="${it.id}">${esc(it.text)}</label>
-        ${it.custom ? `<button class="del" onclick="delCustom('${it.id}')" aria-label="刪除">✕</button>` : ''}
-      </div>`;
-    }).join('');
-    return `<div class="card pack-cat"><h3>${esc(c.cat)}</h3>${rows}
-      <form class="add" onsubmit="addCustom(event, ${ci})">
+      // 景點介紹：展開 / 收合加上高度動畫
+      function bindSpots(root) {
+        root.querySelectorAll(".spots details").forEach((det) => {
+          const body = det.querySelector(".spot-body");
+          let anim = null;
+          det.querySelector("summary").addEventListener("click", (e) => {
+            e.preventDefault();
+            const closing = det.open && !det.classList.contains("closing");
+            // 收合時瀏覽器仍會回報內容高度，所以從 0 開始
+            const from = det.open ? body.getBoundingClientRect().height : 0;
+            if (anim) anim.cancel();
+            if (closing) {
+              det.classList.add("closing");
+              anim = body.animate(
+                { height: [from + "px", "0px"], opacity: [1, 0] },
+                { duration: 250, easing: "ease" },
+              );
+              anim.onfinish = () => {
+                det.open = false;
+                det.classList.remove("closing");
+                anim = null;
+              };
+            } else {
+              det.classList.remove("closing");
+              det.open = true;
+              anim = body.animate(
+                {
+                  height: [from + "px", body.scrollHeight + "px"],
+                  opacity: [0, 1],
+                },
+                { duration: 250, easing: "ease" },
+              );
+              anim.onfinish = () => (anim = null);
+            }
+          });
+        });
+      }
+      function openDay(i) {
+        state.day = i;
+        save(false);
+        renderDayTabs();
+        renderDay();
+        showTab("days");
+        window.scrollTo(0, 0);
+      }
+
+      // ---------- 行李（兩人分開） ----------
+      function packItems(who) {
+        const pk = state.pk[who];
+        return PACK.map((c, ci) => ({
+          cat: c.cat,
+          ci,
+          items: c.items
+            .map((t, ii) => ({ id: `p${ci}-${ii}`, text: t }))
+            .concat(
+              state.custom
+                .filter((x) => x.who === who && x.cat === ci)
+                .map((x) => ({ id: x.id, text: x.text, custom: true })),
+            )
+            .filter((it) => !pk.hide[it.id]),
+        }));
+      }
+      function packStat(who) {
+        let total = 0,
+          done = 0;
+        packItems(who).forEach((c) =>
+          c.items.forEach((it) => {
+            total++;
+            if (state.pk[who].on[it.id]) done++;
+          }),
+        );
+        return { total, done };
+      }
+      function renderPack() {
+        const who = state.who,
+          pk = state.pk[who];
+        document.getElementById("whoTabs").innerHTML = Object.entries(PEOPLE)
+          .map(([k, name]) => {
+            const s = packStat(k);
+            return `<button class="${k === who ? "on" : ""}" onclick="setWho('${k}')">${name}的行李<span class="p num">${s.done} / ${s.total}</span></button>`;
+          })
+          .join("");
+        const s = packStat(who);
+        document.getElementById("packList").innerHTML = packItems(who)
+          .map(
+            (c) => `
+    <div class="card"><h3 style="margin-top:0">${esc(c.cat)}</h3>
+      ${c.items
+        .map((it) => {
+          const on = !!pk.on[it.id];
+          return `<div class="swipe">
+          <button class="swipe-del" onclick="delPack('${it.id}', ${!!it.custom})" aria-label="刪除 ${esc(it.text)}">刪除</button>
+          <div class="item swipe-fg ${on ? "done" : ""}">
+            <input type="checkbox" id="${who}-${it.id}" ${on ? "checked" : ""} onchange="togglePack('${it.id}', this.checked)">
+            <label for="${who}-${it.id}">${esc(it.text)}</label>
+          </div>
+        </div>`;
+        })
+        .join("")}
+      <form class="add" onsubmit="addCustom(event, ${c.ci})">
         <input type="text" placeholder="＋ 自己加一項" aria-label="新增項目到${esc(c.cat)}">
         <button type="submit">加入</button>
-      </form></div>`;
-  }).join('');
-  document.getElementById('packBar').style.width = (total ? done / total * 100 : 0) + '%';
-  document.getElementById('packCount').textContent = `已準備 ${done} / ${total} 項`;
-}
-function togglePack(id, on) { if (on) state.pack[id] = true; else delete state.pack[id]; save(false); renderPack(); }
-function addCustom(e, ci) {
-  e.preventDefault();
-  const input = e.target.querySelector('input'), text = input.value.trim();
-  if (!text) return;
-  state.custom.push({ id: 'c' + Date.now(), cat: ci, text });
-  save('已加入'); renderPack();
-}
-function delCustom(id) {
-  state.custom = state.custom.filter(x => x.id !== id); delete state.pack[id];
-  save('已刪除'); renderPack();
-}
-document.getElementById('packReset').onclick = () => {
-  if (!confirm('確定要把全部勾選取消嗎？')) return;
-  state.pack = {}; save('已重設'); renderPack();
-};
+      </form>
+    </div>`,
+          )
+          .join("");
+        document.getElementById("packBar").style.width =
+          (s.total ? (s.done / s.total) * 100 : 0) + "%";
+        document.getElementById("packCount").textContent =
+          `已準備 ${s.done} / ${s.total} 項`;
+        bindSwipe(document.getElementById("packList"));
+      }
 
-// ---------- 備份 ----------
-document.getElementById('exportBtn').onclick = async () => {
-  const text = JSON.stringify({ f: state.f, pack: state.pack, custom: state.custom });
-  const box = document.getElementById('backupBox');
-  box.value = text;
-  try { await navigator.clipboard.writeText(text); toast('已複製，可以貼到 LINE'); }
-  catch (e) { box.select(); toast('請長按文字框 → 拷貝'); }
-};
-document.getElementById('importBtn').onclick = () => {
-  try {
-    const data = JSON.parse(document.getElementById('backupBox').value);
-    if (!data.f) throw 0;
-    if (!confirm('還原會覆蓋這支手機目前的資料，確定嗎？')) return;
-    Object.assign(state, { f: data.f, pack: data.pack || {}, custom: data.custom || [] });
-    save('已還原'); location.reload();
-  } catch (e) { toast('備份文字格式不對'); }
-};
+      // 向左滑出「刪除」，點了才刪；點別處或往右滑收回
+      function closeSwipes(except) {
+        document
+          .querySelectorAll(".swipe.open")
+          .forEach((el) => el !== except && el.classList.remove("open"));
+      }
+      function bindSwipe(root) {
+        root.querySelectorAll(".swipe").forEach((row) => {
+          const fg = row.querySelector(".swipe-fg");
+          let x0 = 0,
+            y0 = 0,
+            dx = 0,
+            axis = null,
+            down = false,
+            swiped = false;
+          fg.addEventListener("pointerdown", (e) => {
+            down = true;
+            axis = null;
+            swiped = false;
+            x0 = e.clientX;
+            y0 = e.clientY;
+            dx = row.classList.contains("open") ? -row.querySelector(".swipe-del").offsetWidth : 0;
+          });
+          fg.addEventListener("pointermove", (e) => {
+            if (!down) return;
+            const mx = e.clientX - x0,
+              my = e.clientY - y0;
+            if (!axis && (Math.abs(mx) > 8 || Math.abs(my) > 8))
+              axis = Math.abs(mx) > Math.abs(my) ? "x" : "y";
+            if (axis !== "x") return;
+            const w = row.querySelector(".swipe-del").offsetWidth;
+            const base = row.classList.contains("open") ? -w : 0;
+            dx = Math.max(-w * 1.2, Math.min(0, base + mx));
+            fg.style.transition = "none";
+            fg.style.transform = `translateX(${dx}px)`;
+          });
+          const end = () => {
+            if (!down) return;
+            down = false;
+            fg.style.transition = "";
+            fg.style.transform = "";
+            if (axis !== "x") return;
+            swiped = true;
+            const w = row.querySelector(".swipe-del").offsetWidth;
+            closeSwipes(row);
+            row.classList.toggle("open", dx < -w / 2);
+          };
+          fg.addEventListener("pointerup", end);
+          fg.addEventListener("pointercancel", end);
+          // 滑動或已展開時，點擊只負責收回，不要勾選
+          fg.addEventListener(
+            "click",
+            (e) => {
+              if (swiped || row.classList.contains("open")) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!swiped) row.classList.remove("open");
+                swiped = false;
+              }
+            },
+            true,
+          );
+        });
+      }
+      document.addEventListener("pointerdown", (e) => {
+        if (!e.target.closest(".swipe.open")) closeSwipes();
+      });
+      function setWho(k) {
+        state.who = k;
+        save(false);
+        renderPack();
+      }
+      function togglePack(id, on) {
+        const pk = state.pk[state.who];
+        if (on) pk.on[id] = true;
+        else delete pk.on[id];
+        save(false);
+        renderPack();
+      }
+      function addCustom(e, ci) {
+        e.preventDefault();
+        const text = e.target.querySelector("input").value.trim();
+        if (!text) return;
+        state.custom.push({
+          id: "c" + Date.now(),
+          who: state.who,
+          cat: ci,
+          text,
+        });
+        save("已加入");
+        renderPack();
+      }
+      function delPack(id, isCustom) {
+        const pk = state.pk[state.who];
+        if (isCustom) state.custom = state.custom.filter((x) => x.id !== id);
+        else pk.hide[id] = true;
+        delete pk.on[id];
+        save("已刪除");
+        renderPack();
+      }
+      document.getElementById("packReset").onclick = () => {
+        if (!confirm(`確定要把${PEOPLE[state.who]}的勾選全部取消嗎？`)) return;
+        state.pk[state.who].on = {};
+        save("已取消勾選");
+        renderPack();
+      };
+      document.getElementById("packRestore").onclick = () => {
+        if (!confirm(`把${PEOPLE[state.who]}刪掉的預設項目加回來？`)) return;
+        state.pk[state.who].hide = {};
+        save("已恢復");
+        renderPack();
+      };
 
-// ---------- 分頁 ----------
-function showTab(name) {
-  document.querySelectorAll('section[id^=tab-]').forEach(s => s.hidden = s.id !== 'tab-' + name);
-  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === name));
-}
-document.querySelectorAll('#tabs button').forEach(b => b.onclick = () => {
-  if (b.dataset.tab === 'days') { renderDayTabs(); renderDay(); }
-  showTab(b.dataset.tab); window.scrollTo(0, 0);
-});
+      // ---------- 匯率（即時抓取，離線用上次的） ----------
+      const RATE_SOURCES = [
+        {
+          name: "ExchangeRate-API",
+          url: "https://open.er-api.com/v6/latest/CNY",
+          parse: (d) => ({
+            rate: d.rates.TWD,
+            updated: d.time_last_update_unix * 1000,
+          }),
+        },
+        {
+          name: "currency-api",
+          url: "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/cny.json",
+          parse: (d) => ({
+            rate: d.cny.twd,
+            updated: new Date(d.date + "T00:00:00Z").getTime(),
+          }),
+        },
+      ];
+      const rateNow = () => state.rate?.rate || 0;
+      async function fetchRate() {
+        document.getElementById("rateMeta").textContent = "更新中…";
+        for (const src of RATE_SOURCES) {
+          try {
+            const res = await fetch(
+              src.url + (src.url.includes("?") ? "&" : "?") + "t=" + Date.now(),
+              { cache: "no-store" },
+            );
+            if (!res.ok) throw 0;
+            const { rate, updated } = src.parse(await res.json());
+            if (!(rate > 0)) throw 0;
+            state.rate = { rate, updated, fetched: Date.now(), src: src.name };
+            save(false);
+            renderRate(true);
+            renderExp();
+            return;
+          } catch (e) {
+            /* 換下一個來源 */
+          }
+        }
+        renderRate(false);
+      }
+      function renderRate(online) {
+        const r = state.rate;
+        const t = (ts) =>
+          new Date(ts).toLocaleString("zh-TW", {
+            month: "numeric",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          });
+        document.getElementById("rateText").textContent = r
+          ? `¥1 ≈ NT$ ${r.rate.toFixed(3)}`
+          : "尚未取得匯率";
+        document.getElementById("rateMeta").textContent = r
+          ? `${online === true ? "✅ 已更新" : online === false ? "⚠️ 目前離線，使用上次匯率・抓取於 " + t(r.fetched) : "上次匯率"}・報價時間 ${t(r.updated)}・市場中間價，與銀行換匯價略有差異`
+          : "請連上網路後按「重新整理」";
+        convFrom("cny");
+      }
+      const cvCny = document.getElementById("cvCny"),
+        cvTwd = document.getElementById("cvTwd");
+      function convFrom(side) {
+        const r = rateNow();
+        if (!r) return;
+        if (side === "cny")
+          cvTwd.value = cvCny.value === "" ? "" : Math.round(cvCny.value * r);
+        else
+          cvCny.value = cvTwd.value === "" ? "" : (cvTwd.value / r).toFixed(1);
+      }
+      cvCny.oninput = () => convFrom("cny");
+      cvTwd.oninput = () => convFrom("twd");
+      document.getElementById("rateRefresh").onclick = fetchRate;
 
-if (typeof state.day !== 'number' || state.day < 0 || state.day >= DAYS.length) state.day = 0;
-bindFields(document);
-renderPack();
+      // ---------- 記帳 ----------
+      let exCat = "餐飲",
+        exCur = "CNY";
+      document.getElementById("exDay").innerHTML = DAYS.map(
+        (d, i) => `<option value="${i}">${DAY_NAMES[i]} ${d.date}</option>`,
+      ).join("");
+      document.getElementById("exDay").value = String(Math.max(tripDay, 0));
+      function renderChips() {
+        document.getElementById("exCat").innerHTML = Object.entries(EXP_CATS)
+          .map(
+            ([k, ic]) =>
+              `<button type="button" class="${k === exCat ? "on" : ""}" onclick="exCat='${k}';renderChips()">${ic} ${k}</button>`,
+          )
+          .join("");
+        document.getElementById("exCur").innerHTML = [
+          ["CNY", "人民幣"],
+          ["TWD", "台幣"],
+        ]
+          .map(
+            ([k, n]) =>
+              `<button type="button" class="${k === exCur ? "on" : ""}" onclick="exCur='${k}';renderChips()">${n}</button>`,
+          )
+          .join("");
+      }
+      const toTwd = (e) => (e.cur === "TWD" ? e.amt : e.amt * rateNow());
+      function renderExp() {
+        const list = state.exp;
+        const cny = list
+          .filter((e) => e.cur === "CNY")
+          .reduce((s, e) => s + e.amt, 0);
+        const twd = list
+          .filter((e) => e.cur === "TWD")
+          .reduce((s, e) => s + e.amt, 0);
+        const total = list.reduce((s, e) => s + toTwd(e), 0);
+        document.getElementById("expTotal").textContent =
+          rateNow() || !cny
+            ? `NT$ ${fmt(total)}`
+            : `¥${fmt(cny, 1)} + NT$${fmt(twd)}`;
+        document.getElementById("expSub").textContent = list.length
+          ? `人民幣 ¥${fmt(cny, 1)}・台幣 NT$${fmt(twd)}${cny && rateNow() ? "（人民幣以目前匯率換算）" : ""}`
+          : "還沒有記錄";
+        document.getElementById("expList").innerHTML = DAYS.map((d, i) => {
+          const items = list.filter((e) => e.day === i);
+          if (!items.length) return "";
+          const sub = items.reduce((s, e) => s + toTwd(e), 0);
+          return (
+            `<h3 class="row between"><span>${DAY_NAMES[i]} ${d.date}</span><span class="small num">${rateNow() ? "NT$ " + fmt(sub) : ""}</span></h3>` +
+            items
+              .slice()
+              .reverse()
+              .map(
+                (e) => `
+        <div class="swipe">
+        <button class="swipe-del" onclick="delExp('${e.id}')" aria-label="刪除這筆">刪除</button>
+        <div class="exp swipe-fg">
+          <div class="ic">${EXP_CATS[e.cat] || "📝"}</div>
+          <div class="body"><b>${esc(e.text || e.cat)}</b><span class="muted small">${esc(e.cat)}・${esc(e.pay)}</span></div>
+          <div class="right num">
+            <div><b>${e.cur === "CNY" ? "¥" : "NT$"}${fmt(e.amt, e.cur === "CNY" ? 1 : 0)}</b></div>
+            ${e.cur === "CNY" && rateNow() ? `<div class="muted small">≈ NT$${fmt(toTwd(e))}</div>` : ""}
+          </div>
+        </div>
+        </div>`,
+              )
+              .join("")
+          );
+        }).join("");
+        bindSwipe(document.getElementById("expList"));
+      }
+      document.getElementById("expForm").onsubmit = (e) => {
+        e.preventDefault();
+        const amt = parseFloat(document.getElementById("exAmt").value);
+        if (!(amt > 0)) {
+          toast("請輸入金額");
+          return;
+        }
+        state.exp.push({
+          id: "e" + Date.now(),
+          day: Number(document.getElementById("exDay").value),
+          cat: exCat,
+          text: document.getElementById("exText").value.trim(),
+          amt,
+          cur: exCur,
+          pay: document.getElementById("exPay").value,
+        });
+        document.getElementById("exText").value = "";
+        document.getElementById("exAmt").value = "";
+        save("已記下");
+        renderExp();
+      };
+      function delExp(id) {
+        state.exp = state.exp.filter((e) => e.id !== id);
+        save("已刪除");
+        renderExp();
+      }
 
-// ---------- 離線 ----------
-if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
-  navigator.serviceWorker.register('sw.js');
-}
-</script>
-</body>
+      // ---------- 備份 ----------
+      document.getElementById("exportBtn").onclick = async () => {
+        const text = JSON.stringify({
+          f: state.f,
+          pk: state.pk,
+          custom: state.custom,
+          exp: state.exp,
+        });
+        const box = document.getElementById("backupBox");
+        box.value = text;
+        try {
+          await navigator.clipboard.writeText(text);
+          toast("已複製，可以貼到 LINE");
+        } catch (e) {
+          box.select();
+          toast("請長按文字框 → 拷貝");
+        }
+      };
+      document.getElementById("importBtn").onclick = () => {
+        try {
+          const data = JSON.parse(document.getElementById("backupBox").value);
+          if (!data.f) throw 0;
+          if (
+            !confirm(
+              "匯入後，這支手機會變成和傳來的資料一樣，原本填的內容會被取代。確定匯入嗎？",
+            )
+          )
+            return;
+          Object.assign(state, {
+            f: data.f,
+            pk: data.pk || state.pk,
+            custom: data.custom || [],
+            exp: data.exp || [],
+          });
+          save("已匯入");
+          location.reload();
+        } catch (e) {
+          toast("文字不完整，請重新複製貼上");
+        }
+      };
+
+      // ---------- 分頁 ----------
+      function showTab(name) {
+        document
+          .querySelectorAll("section[id^=tab-]")
+          .forEach((s) => (s.hidden = s.id !== "tab-" + name));
+        document
+          .querySelectorAll("#tabs button")
+          .forEach((b) => b.classList.toggle("on", b.dataset.tab === name));
+      }
+      document.querySelectorAll("#tabs button").forEach(
+        (b) =>
+          (b.onclick = () => {
+            if (b.dataset.tab === "days") {
+              renderDayTabs();
+              renderDay();
+            }
+            if (b.dataset.tab === "money" && navigator.onLine) fetchRate();
+            showTab(b.dataset.tab);
+            window.scrollTo(0, 0);
+          }),
+      );
+
+      // ---------- 啟動 ----------
+      if (
+        typeof state.day !== "number" ||
+        state.day < 0 ||
+        state.day >= DAYS.length
+      )
+        state.day = 0;
+      if (!state.pk?.a || !state.pk?.b)
+        state.pk = { a: { on: {}, hide: {} }, b: { on: {}, hide: {} } };
+      bindFields(document);
+      renderPack();
+      renderChips();
+      renderRate(null);
+      renderExp();
+      if (navigator.onLine) fetchRate();
+
+      if (
+        "serviceWorker" in navigator &&
+        location.protocol.startsWith("http")
+      ) {
+        navigator.serviceWorker.register("sw.js");
+      }
+    </script>
+  </body>
 </html>
