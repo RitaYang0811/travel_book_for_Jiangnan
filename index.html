@@ -28,8 +28,9 @@
         --zhu-soft: #f8e7e1;
         --gold: #a77a2a;
         --fs: 1;
-        --serif: -apple-system, "PingFang TC", "Noto Sans TC",
-          "Microsoft JhengHei", sans-serif;
+        --serif:
+          -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei",
+          sans-serif;
         color-scheme: light;
       }
       * {
@@ -181,7 +182,11 @@
       /* 天數標籤 */
       .day-tag {
         flex: none;
-        min-width: 4.6rem;
+        min-width: 5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         padding: 6px 8px;
         border-radius: 12px;
         background: var(--dai);
@@ -193,6 +198,7 @@
       }
       .day-tag small {
         display: block;
+        white-space: nowrap;
         font-family: -apple-system, sans-serif;
         font-size: 0.75rem;
         font-weight: 500;
@@ -346,6 +352,23 @@
         /* 字放大時自動變一欄 */
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
         gap: 0 10px;
+      }
+      /* 姓名／電話成組：空間不夠時整組換行，不會拆散 */
+      .grid2.grouped {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 10px;
+      }
+      .field-group {
+        display: flex;
+        flex-wrap: wrap;
+        flex: 1 1 14rem;
+        min-width: 0;
+        gap: 0 10px;
+      }
+      .field-group .f {
+        flex: 1 1 6rem;
+        min-width: 0;
       }
       .guide {
         background: #fbf5e9;
@@ -627,26 +650,36 @@
         grid-template-columns: repeat(5, 1fr);
         padding-bottom: env(safe-area-inset-bottom, 0px);
       }
+      nav.tabs .tab-indicator {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20%;
+        height: 100%;
+        background: var(--zhu-soft);
+        border-top: 3px solid var(--zhu);
+        transition: transform 0.25s ease;
+        pointer-events: none;
+      }
       nav.tabs button {
+        position: relative;
+        z-index: 1;
         border: 0;
         border-radius: 0;
         background: none;
         color: var(--muted);
-        padding: 9px 2px 11px;
-        font-size: 0.82rem;
+        padding: 11px 2px 11px;
+        font-size: 0.9rem;
         font-weight: 600;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         gap: 2px;
-      }
-      nav.tabs button .ic {
-        font-size: 1.3rem;
-        line-height: 1;
+        transition: color 0.25s ease;
       }
       nav.tabs button.on {
         color: var(--dai);
-        box-shadow: inset 0 3px 0 var(--zhu);
       }
 
       .toast {
@@ -724,7 +757,7 @@
               data-field="fl.out.meet"
               placeholder="例：06:30 桃園一航廈 華航櫃台"
           /></label>
-          <h3>回程　11/1（日）</h3>
+          <h3>回程　11/01（日）</h3>
           <div class="grid2">
             <label class="f"
               >航班<input
@@ -748,19 +781,23 @@
 
         <div class="card">
           <h2>👥 領隊 / 導遊</h2>
-          <div class="grid2">
-            <label class="f"
-              >領隊姓名<input type="text" data-field="c.leader"
-            /></label>
-            <label class="f"
-              >領隊電話<input type="tel" data-field="c.leaderTel"
-            /></label>
-            <label class="f"
-              >當地導遊<input type="text" data-field="c.guide"
-            /></label>
-            <label class="f"
-              >導遊電話<input type="tel" data-field="c.guideTel"
-            /></label>
+          <div class="grid2 grouped">
+            <div class="field-group">
+              <label class="f"
+                >領隊姓名<input type="text" data-field="c.leader"
+              /></label>
+              <label class="f"
+                >領隊電話<input type="tel" data-field="c.leaderTel"
+              /></label>
+            </div>
+            <div class="field-group">
+              <label class="f"
+                >當地導遊<input type="text" data-field="c.guide"
+              /></label>
+              <label class="f"
+                >導遊電話<input type="tel" data-field="c.guideTel"
+              /></label>
+            </div>
           </div>
           <label class="f"
             >遊覽車車號 / 顏色<input
@@ -894,10 +931,16 @@
               <b>全程無購物、無自費</b>，入住國際五星飯店，三排座椅遊覽車。
             </li>
             <li>
-              <b>禁止脫隊</b>：團體行程需同進同出；中途脫隊視同放棄，不退費，小費仍需付足天數；脫隊延回須自行開立機票。
+              <b>禁止脫隊</b
+              >：團體行程需同進同出；中途脫隊視同放棄，不退費，小費仍需付足天數；脫隊延回須自行開立機票。
             </li>
             <li>
-              <b>證件</b>：台灣出入境用護照，出入境大陸出示<b>有效期限內的台胞證</b>。建議出發前七個工作日把護照正本交給旅行社。
+              <b>證件</b
+              >：台灣出入境用護照，出入境大陸出示<b>有效期限內的台胞證</b>。建議出發前七個工作日把護照正本交給旅行社。
+            </li>
+            <li>
+              <b>保險</b
+              >：旅行社已投保<b>500萬旅行業責任保險</b>及<b>20萬意外醫療險</b>；建議自行加保旅遊平安保險（保單資訊見「緊急聯絡」頁）。
             </li>
             <li>
               <b>行動電源</b>：須標示 10,000mAh 以下、每人限 2
@@ -908,27 +951,28 @@
               <b>機位</b>：團體機票無法預先選位，<b>同行者座位可能不相鄰</b>。
             </li>
             <li>
-              <b>小費</b>：隨團人員、導遊及司機每人每天 NT$300（5天 =
-              每人 NT$1,500，兩人 NT$3,000）；行李、房間小費人民幣 5–10
+              <b>小費</b>：隨團人員、導遊及司機每人每天 NT$300（5天 = 每人
+              NT$1,500，兩人 NT$3,000）；行李、房間小費人民幣 5–10
               元；足浴按摩小費人民幣 10–25 元。
             </li>
             <li>
-              <b>用餐</b>：10人一桌（八菜一湯），已請餐廳少油少鹽，口味太重可請導遊協助。素食餐多為炒青菜
+              <b>用餐</b
+              >：10人一桌（八菜一湯），已請餐廳少油少鹽，口味太重可請導遊協助。素食餐多為炒青菜
               2–3 道，素食者建議自備素食罐頭或泡麵。
             </li>
             <li>
-              <b>房型</b>：以兩人一室、兩張單人床為主；需大床房請出發前提出，可能加價且不保證。
+              <b>房型</b
+              >：以兩人一室、兩張單人床為主；需大床房請出發前提出，可能加價且不保證。
             </li>
             <li>
-              <b>飯店</b>：部分飯店不提供一次性用品（牙膏、牙刷、梳子、浴巾、刮鬍刀），請自備盥洗用具及拖鞋。季節交替時可能沒有冷暖氣。
+              <b>飯店</b
+              >：部分飯店不提供一次性用品（牙膏、牙刷、梳子、浴巾、刮鬍刀），請自備盥洗用具及拖鞋。季節交替時可能沒有冷暖氣。
             </li>
+            <li><b>行程順序</b>可能依飯店與交通調整，以行前說明會資料為準。</li>
+            <li>餐廳、休息站販售的絲綢、字畫、茶葉等<b>並非購物站</b>。</li>
             <li>
-              <b>行程順序</b>可能依飯店與交通調整，以行前說明會資料為準。
+              <b>秋日限定</b>：10–12/18 出發，蘇州享用大閘蟹一對（公母各一）🦀
             </li>
-            <li>
-              餐廳、休息站販售的絲綢、字畫、茶葉等<b>並非購物站</b>。
-            </li>
-            <li><b>秋日限定</b>：10–12/18 出發，蘇州享用大閘蟹一對（公母各一）🦀</li>
             <li>全程有<b>個人耳機導覽</b>，記得每晚充電。</li>
           </ul>
         </div>
@@ -976,6 +1020,18 @@
           <label class="f"
             >台灣家人聯絡人 / 電話<input type="text" data-field="c.family"
           /></label>
+          <label class="f"
+            >個人旅平險保險公司 / 保單號碼<input
+              type="text"
+              data-field="c.travelIns"
+              placeholder="自行投保後填寫"
+          /></label>
+          <label class="f"
+            >旅平險保險公司電話<input
+              type="tel"
+              data-field="c.travelInsTel"
+              placeholder="自行投保後填寫"
+          /></label>
         </div>
 
         <div class="card">
@@ -1019,10 +1075,13 @@
           </p>
           <ol class="small" style="margin: 0 0 10px; padding-left: 1.4em">
             <li>在<b>填好資料的手機</b>按「複製我的資料」，用 LINE 傳給對方</li>
-            <li>在<b>另一支手機</b>把那段文字貼到下面的框框，按「匯入這份資料」</li>
+            <li>
+              在<b>另一支手機</b>把那段文字貼到下面的框框，按「匯入這份資料」
+            </li>
           </ol>
           <div class="tip" style="margin: 0 0 10px">
-            ⚠️ 匯入後，這支手機會變成和對方<b>完全一樣</b>，這支手機原本填的內容會被取代。
+            ⚠️
+            匯入後，這支手機會變成和對方<b>完全一樣</b>，這支手機原本填的內容會被取代。
           </div>
           <div class="row">
             <button class="primary" id="exportBtn">複製我的資料</button>
@@ -1038,11 +1097,12 @@
     </div>
 
     <nav class="tabs" id="tabs">
-      <button data-tab="home" class="on"><span class="ic">🏠</span>總覽</button>
-      <button data-tab="days"><span class="ic">🗺️</span>行程</button>
-      <button data-tab="pack"><span class="ic">🧳</span>行李</button>
-      <button data-tab="money"><span class="ic">💰</span>記帳</button>
-      <button data-tab="info"><span class="ic">📋</span>須知</button>
+      <span class="tab-indicator" id="tabIndicator"></span>
+      <button data-tab="home" class="on">總覽</button>
+      <button data-tab="days">行程</button>
+      <button data-tab="pack">行李</button>
+      <button data-tab="money">記帳</button>
+      <button data-tab="info">須知</button>
     </nav>
     <div class="toast" id="toast">已儲存</div>
 
@@ -1191,7 +1251,7 @@
           hotels: ["寶華萬豪酒店", "楊浦濱江萬豪酒店", "濱江喜來登酒店"],
         },
         {
-          date: "11/1",
+          date: "11/01",
           wk: "日",
           route: "上海 → 桃園",
           path: "上海城隍廟商圈 →5Km(0.5h)→ 田子坊 → 金茂君悅九重天下午茶 →49Km(1.5h)→ 上海浦東機場 → 桃園",
@@ -1461,13 +1521,13 @@
         .join("")}</dl>
       ${d.mealNote ? `<p class="muted small" style="margin:8px 0 0">${esc(d.mealNote)}</p>` : ""}
       ${
-        isLast
-          ? `<h3>🏠 溫暖的家</h3>`
-          : `
+        isLast ? `<h3>🏠 溫暖的家</h3>` : (
+          `
       <h3>🏨 住宿 <span class="badge zhu">可能異動</span></h3>
       <div class="muted small">行程表：國際品牌五星 ${d.hotels.map(esc).join(" 或 ")} 或同級（大堂及房間有免費 wifi）</div>
       <label class="f">實際入住飯店<input type="text" data-field="${p}hotel" placeholder="確定後填寫"></label>
       <label class="f">飯店電話 / 地址<input type="text" data-field="${p}hotelAddr"></label>`
+        )
       }
     </div>
 
@@ -1625,7 +1685,10 @@
             swiped = false;
             x0 = e.clientX;
             y0 = e.clientY;
-            dx = row.classList.contains("open") ? -row.querySelector(".swipe-del").offsetWidth : 0;
+            dx =
+              row.classList.contains("open") ?
+                -row.querySelector(".swipe-del").offsetWidth
+              : 0;
           });
           fg.addEventListener("pointermove", (e) => {
             if (!down) return;
@@ -1769,11 +1832,16 @@
             minute: "2-digit",
             hour12: false,
           });
-        document.getElementById("rateText").textContent = r
-          ? `¥1 ≈ NT$ ${r.rate.toFixed(3)}`
-          : "尚未取得匯率";
-        document.getElementById("rateMeta").textContent = r
-          ? `${online === true ? "✅ 已更新" : online === false ? "⚠️ 目前離線，使用上次匯率・抓取於 " + t(r.fetched) : "上次匯率"}・報價時間 ${t(r.updated)}・市場中間價，與銀行換匯價略有差異`
+        document.getElementById("rateText").textContent =
+          r ? `¥1 ≈ NT$ ${r.rate.toFixed(3)}` : "尚未取得匯率";
+        document.getElementById("rateMeta").textContent =
+          r ?
+            `${
+              online === true ? "✅ 已更新"
+              : online === false ?
+                "⚠️ 目前離線，使用上次匯率・抓取於 " + t(r.fetched)
+              : "上次匯率"
+            }・報價時間 ${t(r.updated)}・市場中間價，與銀行換匯價略有差異`
           : "請連上網路後按「重新整理」";
         convFrom("cny");
       }
@@ -1826,11 +1894,12 @@
           .reduce((s, e) => s + e.amt, 0);
         const total = list.reduce((s, e) => s + toTwd(e), 0);
         document.getElementById("expTotal").textContent =
-          rateNow() || !cny
-            ? `NT$ ${fmt(total)}`
-            : `¥${fmt(cny, 1)} + NT$${fmt(twd)}`;
-        document.getElementById("expSub").textContent = list.length
-          ? `人民幣 ¥${fmt(cny, 1)}・台幣 NT$${fmt(twd)}${cny && rateNow() ? "（人民幣以目前匯率換算）" : ""}`
+          rateNow() || !cny ?
+            `NT$ ${fmt(total)}`
+          : `¥${fmt(cny, 1)} + NT$${fmt(twd)}`;
+        document.getElementById("expSub").textContent =
+          list.length ?
+            `人民幣 ¥${fmt(cny, 1)}・台幣 NT$${fmt(twd)}${cny && rateNow() ? "（人民幣以目前匯率換算）" : ""}`
           : "還沒有記錄";
         document.getElementById("expList").innerHTML = DAYS.map((d, i) => {
           const items = list.filter((e) => e.day === i);
@@ -1929,6 +1998,8 @@
       };
 
       // ---------- 分頁 ----------
+      const TAB_ORDER = ["home", "days", "pack", "money", "info"];
+      const tabIndicator = document.getElementById("tabIndicator");
       function showTab(name) {
         document
           .querySelectorAll("section[id^=tab-]")
@@ -1936,6 +2007,9 @@
         document
           .querySelectorAll("#tabs button")
           .forEach((b) => b.classList.toggle("on", b.dataset.tab === name));
+        const idx = TAB_ORDER.indexOf(name);
+        if (idx >= 0)
+          tabIndicator.style.transform = `translateX(${idx * 100}%)`;
       }
       document.querySelectorAll("#tabs button").forEach(
         (b) =>

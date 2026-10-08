@@ -1,5 +1,5 @@
 // 更新內容時把版本號 +1，手機才會抓到新版
-const CACHE = 'jiangnan-v6';
+const CACHE = 'jiangnan-v10';
 const FILES = ['./', 'index.html', 'manifest.json', 'icon-180.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
